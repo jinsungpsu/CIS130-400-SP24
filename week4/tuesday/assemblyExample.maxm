@@ -1,0 +1,43 @@
+
+; BREAK - BACK BY 9:45AM
+; CIS 130, SP24 Code Examples
+
+.386
+.model flat,stdcall
+.stack 4096
+
+.data
+
+; semi colon is the beginning of a comment
+; not the end of an instruction
+; like we're used to in c++ or java
+
+; int someVariable = 8
+; this goes in RAM
+; someVariable becomes an 
+; abstraction to an actual
+; memory address
+; BYTE is the "data type"
+; 8 is the value assigned
+
+someVariable DWORD 1234h
+; in assembly
+; WORD = 16 bits
+; DWORD = DOUBLE WORD = 32 bits
+
+
+; ignore this...
+ExitProcess proto,dwExitCode:dword
+
+.code
+main proc
+	; mov instruction, but more like copying
+	; most similar to assignment (=) operation
+	; but not really
+	mov eax, someVariable
+	
+	mov eax, offset someVariable
+
+	invoke ExitProcess,0
+main endp
+end main
