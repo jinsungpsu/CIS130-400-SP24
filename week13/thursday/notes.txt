@@ -1,0 +1,94 @@
+// exam 1 - converting to upper case
+01100001 - 97 or 'a'
+to convert this to 'A'
+all we gotta do is make the 6th bit 0
+
+    01100001
+AND 11011111
+--------------
+    01000001
+	
+The result is... anything you AND by 1... stays the same
+anything you AND by 0... changes 0 to zero if it was a 0... or stays 0 if it was already 0
+
+01000001 - 65 or 'A'
+
+
+01110001 - 113 or 'q'
+01010001 - 81 or 'Q'
+
+
+// example 2, which converting decimal to ASCII
+
+    00000110			this is decimal 6
+OR  00110000			// no matter what the 1st operand
+--------------          // is, bits 5 and 6 will become 
+    00110110            // 1s (or set)
+	                    // this is decimal 56
+						// which is the ACII value of 6
+
+// example 4
+// checking for even/odd
+
+1
+0001
+
+2
+0010
+
+3
+0011
+
+4
+0100
+
+all even numbers have a 0 as LSD
+all odd numbers have a 1 as LSD
+
+....... + LSD * 2^0 (only the LSD can add an odd value to the overall value of the number)
+
+AND any value by 1... 4 bit space... 0001
+
+    0001
+AND 0001
+---------
+    0001   <--- ODD
+	
+	0010
+AND 0001
+---------
+    0000   <---- EVEN
+
+	0011
+AND 0001
+----------
+    0001   <---- ODD
+	
+	0100
+AND 0001
+---------
+    0000    <---- EVEN
+	
+The conclusion... if the result is 0.. then it's even
+
+while (x < 5) {
+	blah blah
+}
+
+loop:
+
+	if (x >= 5)
+		exit;
+	
+JMP loop:
+
+anything resembling a for loop is done using LOOP instructions
+(depend on a counter)
+
+anything else is just jumps (conditional/unconditional)
+
+
+
+
+
+
