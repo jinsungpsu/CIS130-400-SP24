@@ -1,0 +1,97 @@
+unsigned multiply
+mul eax, ebx ; eax = eax * ebx
+
+signed multiply
+imul eax, ebx ; eax = eax * ebx
+
+division unsigned
+div eax, ebx ; eax = eax / ebx
+
+for multiplication: problem is that you normally end up with a huge result that may not fit in the same size registers as the operands
+
+for division: problem is that you normally want to have a BIG dividend
+
+dividend / divisor = quotient % remainder
+
+what is the solution?
+general idea...
+32 bit multiplied by 32 bit... we'll save into 64 bits... save the result into 2 registers...
+
+32 bit multiplication looks like...
+
+eax * ebx = result is saved into EDX and EAX
+the actual instruction will look like
+mov eax, 12345h
+mov ebx, 1000h
+mul ebx		; single operand... ebx
+		; and a implied operand
+		; which is eax
+		; so this is still eax * ebx
+		; and the destination
+		; EDX EAX
+		; The first 32 bits (least significant digits)
+		; get stored in EAX (expected, normal behavior)
+		; but any extra digits get stored into EDX (overflow)
+MULTIPLICATION EXAMPLE:
+256 * 100
+MOV EAX, 256
+MUL 100		; EAX = EAX * 100
+		; BUT... IF THE ANSWER WAS BIGGER THAN THE DESTINATION
+		; THEN THE OVERFLOW WILL GO TO EDX
+
+
+WITH DIVISION, WE HAVE THE OPPOSITE PROBLEM
+
+BIG NUMBER DIVIDED BY SMALLER NUMBER = SMALLER NUMBER
+
+EDX EAX / DIVISOR = EAX (QUOTIENT), EDX (REMAINDER)
+DIVISOR IS YOUR SINGLE OPERAND
+EDX/EAX ARE IMPLIED OPERANDS
+
+A / B = C % D
+
+A = EDX EAX (64 BIT VALUE)
+B = THE OPERAND
+EAX IS "DESTINATION" WHERE RESULT IS SAVED
+EDX IS "DESTINATION" WHERE REMAINDER RESULT IS SAVED
+
+DIV EXAMPLE:
+256 / 4
+MOV EDX, 0
+MOV EAX, 256
+DIV 4			; EAX = 64, EDX = 0 (REMAINDER)
+
+DIV EAX, 4
+
+
+MULTIPLICATION:
+8 BIT EXAMPLES
+AL X BL > RESULT WOULD GO TO AX
+
+16 BIT EXAMPLES
+AX X BX > RESULT DX AX
+
+DIVISION:
+8 BIT:
+AX / BL > AL AH, WHERE AL IS QUOTIENT, AH IS REMAINDER
+16 BIT:
+DX AX / CX > AX DX, WHERE AX IS QUOTIENT, DX IS REMAINDER
+
+
+is this valid?
+mov bx, eax 	; NO, mismatched operands
+
+mov eax, bl 	; NO, mismatched operands
+movsx eax, bl 	; YES, because we are extending
+		; the source
+
+
+.data
+num1 SBYTE -5
+num2 SBYTE 10
+
+.code
+
+movsx eax, num1	; this doesn't work
+movsx ebx, num2
+add eax, ebx
